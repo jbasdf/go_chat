@@ -6,9 +6,10 @@ import (
   "log"
   "net/http"
   "text/template"
+  "os"
 )
 
-var addr = flag.String("addr", ":80", "http service address")
+//var addr = flag.String("addr", ":80", "http service address")
 var homeTempl = template.Must(template.ParseFiles("home.html"))
 
 func homeHandler(c http.ResponseWriter, req *http.Request) {
@@ -20,7 +21,7 @@ func main() {
   go h.run()
   http.HandleFunc("/", homeHandler)
   http.Handle("/ws", websocket.Handler(wsHandler))
-  if err := http.ListenAndServe(*addr, nil); err != nil {
+  if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
     log.Fatal("ListenAndServe:", err)
   }
 }
