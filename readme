@@ -3,6 +3,8 @@ http://mmcgrana.github.io/2012/09/getting-started-with-go-on-heroku.html
 
 http://gary.beagledreams.com/page/go-websocket-chat.html
 http://www.badgerr.co.uk/2011/06/20/golang-away-tcp-chat-server/
-
+https://github.com/antage/eventsource
 
 You have to install Mercurial - brew install hg
+
+Start with:  PORT=5000 go_chat
