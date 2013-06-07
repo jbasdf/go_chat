@@ -1,0 +1,34 @@
+curl -XGET 'http://localhost:9200/geo_jots/geo_jot/_search?pretty=1' -d '
+{
+  "from": 0,
+  "size": 10,
+  "query": {
+    "filtered": {
+      "query": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_distance": {
+          "distance": "1000km",
+          "location": {
+            "lat": 41.69985810000001,
+            "lon": -111.8275742
+          }
+        }
+      }
+    }
+  }
+}'
+
+curl -XGET 'http://localhost:9200/geo_jots/geo_jot/_search?pretty=1' -d '
+{
+  "from": 0,
+  "size": 10,
+  "query": {
+    "filtered": {
+      "query": {
+        "match_all": {}
+      }
+    }
+  }
+}'

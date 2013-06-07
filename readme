@@ -1,10 +1,69 @@
+You have to install Mercurial - brew install hg
+
+Start with:  PORT=5000 go_chat
+
+
+Setup Index:
+http://www.elasticsearch.org/guide/reference/api/admin-indices-create-index/
+
+curl -XPOST localhost:9200/geo_jots -d '{
+  "settings" : {
+    "number_of_shards" : 1
+  },
+  "mappings" : {
+    "geo_jot" : {
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "analyzer" : "snowball",
+          "include_in_all": true
+        },
+        "location" : {
+          "type" : "geo_point",
+          "lat_lon": true
+        }
+      }
+    }
+  }
+}'
+
+
+Delete Index:
+curl -XDELETE 'http://localhost:9200/geo_jots'
+
+
+
 Helps:
+
+http://nerdyworm.com/blog/2013/05/21/building-an-app-with-ember-dot-js-and-go/
+
 http://mmcgrana.github.io/2012/09/getting-started-with-go-on-heroku.html
 
 http://gary.beagledreams.com/page/go-websocket-chat.html
 http://www.badgerr.co.uk/2011/06/20/golang-away-tcp-chat-server/
 https://github.com/antage/eventsource
 
-You have to install Mercurial - brew install hg
+http://www.golang-book.com/13
+http://golang.org/doc/articles/json_and_go.html
 
-Start with:  PORT=5000 go_chat
+Debug tutorial:
+http://cyberroadie.wordpress.com/tag/golang/
+Note that $GOROOT is now $GOPATH
+
+Setup the gdb
+Be sure to install the latest:
+brew install gdb
+
+Then Code Sign gdb
+http://ot.loom.opentapestry.com/view/frKbkkmXSWKXDlsQAqP5TQ?d=www.opentapestry.com
+
+Then reboot the computer or it won't work
+
+Start debugger thus:
+gdb geojots -d $GOPATH
+
+Set a breakpoint in a file
+  b geo_jots.go:65
+
+Or by method
+  b GeoJotsHandler
