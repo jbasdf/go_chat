@@ -45,6 +45,8 @@ func GeoJotsHandler(w http.ResponseWriter, r *http.Request) {
 
   // Find all GeoJots that are close by
   qry := map[string]interface{}{
+    "from":0,
+    "size":50,
     "query": map[string]interface{}{
       "filtered": map[string]interface{}{
         "query": map[string]interface{}{
@@ -78,6 +80,7 @@ func GeoJotsHandler(w http.ResponseWriter, r *http.Request) {
         serveError(w, err)
         return
       }
+      jot.Id = value.Id
       jots = append(jots, jot)
     }
   }
@@ -136,22 +139,13 @@ func UpdateGeoJotHandler(w http.ResponseWriter, r *http.Request) {
 
 
 func DeleteGeoJotHandler(w http.ResponseWriter, r *http.Request) {
-  // Todo find the geojot in ES and delete it
   vars := mux.Vars(r)
-
-  out, err := core.Delete(true, es_index, es_index_type, vars["id"], 1, "")
+  _, err := core.Delete(true, es_index, es_index_type, vars["id"], 1, "")
   if err != nil {
     serveError(w, err)
   }
 
   // Respond with a 204 indicating success, but no content
-  w.Header().Set("Content-Type", "application/json")
+  w.WriteHeader(http.StatusNoContent)
 
-  j, err := json.Marshal(out)
-  if err != nil {
-    serveError(w, err)
-  }
-
-  w.Write(j)
-  //w.WriteHeader(http.StatusNoContent)
 }
