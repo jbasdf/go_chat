@@ -1,0 +1,14 @@
+<div class="container">
+  <ul class="nav nav-tabs">
+    <li>{{#linkTo index}}Index{{/linkTo}}</li>
+    <li>{{#linkTo create}}Create{{/linkTo}}</li>
+  </ul>
+
+  <ul>
+    {{#each controller}}
+      <li>{{#linkTo "edit" this}}{{name}}{{/linkTo}}</li>
+    {{/each}}
+  </ul>
+
+  {{outlet}}
+</div>

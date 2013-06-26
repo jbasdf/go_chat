@@ -13,20 +13,14 @@ curl -XPOST localhost:9200/geo_jots -d '{
   "mappings" : {
     "geo_jot" : {
       "properties" : {
-        "name" : {
-          "type" : "string",
-          "analyzer" : "snowball",
-          "include_in_all": true
-        },
-        "location" : {
-          "type" : "geo_point",
-          "lat_lon": true
-        }
+        "name"      : { "type": "string", "analyzer" : "snowball", "include_in_all": true },
+        "location"  : { "type": "geo_point", "lat_lon": true },
+        "created_at": { "type": "date", "include_in_all": false },
+        "updated_at": { "type": "date", "include_in_all": false }
       }
     }
   }
 }'
-
 
 Delete Index:
 curl -XDELETE 'http://localhost:9200/geo_jots'
@@ -45,6 +39,11 @@ https://github.com/antage/eventsource
 
 http://www.golang-book.com/13
 http://golang.org/doc/articles/json_and_go.html
+
+Mobile Twitter Bootstrap
+http://k33g.github.io/2011/12/30/IOS5-WEBAPP-TWITTER-BOOTSTRAP.html
+
+
 
 Debug tutorial:
 http://cyberroadie.wordpress.com/tag/golang/
