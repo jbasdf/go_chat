@@ -1,6 +1,8 @@
 You have to install Mercurial - brew install hg
 
-Start with:  PORT=5000 go_chat
+Start with:
+
+PORT=5000 geojots
 
 
 Setup Index:

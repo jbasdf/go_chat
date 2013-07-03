@@ -1,63 +1,62 @@
 package main
 
 import (
-  "net/http"
-  "log"
-  "flag"
-  "os"
-  "io"
-  "github.com/gorilla/mux"
-  "code.google.com/p/go.net/websocket"
+	"code.google.com/p/go.net/websocket"
+	"flag"
+	"github.com/gorilla/mux"
+	"io"
+	"log"
+	"net/http"
+	"os"
 )
 
 func serve404(w http.ResponseWriter) {
-  w.WriteHeader(http.StatusNotFound)
-  w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-  io.WriteString(w, "Not Found")
+	w.WriteHeader(http.StatusNotFound)
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	io.WriteString(w, "Not Found")
 }
 
 func serveError(w http.ResponseWriter, err error) {
-  w.WriteHeader(http.StatusInternalServerError)
-  w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-  io.WriteString(w, "Internal Server Error")
-  io.WriteString(w, err.Error())
+	w.WriteHeader(http.StatusInternalServerError)
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	io.WriteString(w, "Internal Server Error")
+	io.WriteString(w, err.Error())
 }
 
 func main() {
-  log.Println("Starting Server")
+	log.Println("Starting Server")
 
-  flag.Parse()
+	flag.Parse()
 
-  // API Routes
-  r := mux.NewRouter()
-  r.HandleFunc("/api/geo_jots", GeoJotsHandler).Methods("GET")
-  r.HandleFunc("/api/geo_jots", CreateGeoJotHandler).Methods("POST")
-  r.HandleFunc("/api/geo_jots/{id}", UpdateGeoJotHandler).Methods("PUT")
-  r.HandleFunc("/api/geo_jots/{id}", DeleteGeoJotHandler).Methods("DELETE")
-  http.Handle("/api/", r)
+	// API Routes
+	r := mux.NewRouter()
+	r.HandleFunc("/api/geo_jots", GeoJotsHandler).Methods("GET")
+	r.HandleFunc("/api/geo_jots/{id}", ShowGeoJotHandler).Methods("GET")
+	r.HandleFunc("/api/geo_jots", CreateGeoJotHandler).Methods("POST")
+	r.HandleFunc("/api/geo_jots/{id}", UpdateGeoJotHandler).Methods("PUT")
+	r.HandleFunc("/api/geo_jots/{id}", DeleteGeoJotHandler).Methods("DELETE")
+	http.Handle("/api/", r)
 
-  // Serve Static Files
-  http.Handle("/", http.FileServer(http.Dir("./public/")))
+	// Serve Static Files
+	http.Handle("/", http.FileServer(http.Dir("./public/")))
 
-  // Handle websockets
-  go h.run()
-  http.Handle("/ws", websocket.Handler(wsHandler))
+	// Handle websockets
+	go h.run()
+	http.Handle("/ws", websocket.Handler(wsHandler))
 
-  port := os.Getenv("PORT")
-  if port == "" {
-    port = "5000"
-  }
-  log.Println("Listening on: " + port)
-  if err := http.ListenAndServe(":"+port, nil); err != nil {
-    log.Fatal("ListenAndServe:", err)
-  }
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "5000"
+	}
+	log.Println("Listening on: " + port)
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
+		log.Fatal("ListenAndServe:", err)
+	}
 
 }
 
-
-
 //"time"
-  //"fmt"
+//"fmt"
 //eventsource "github.com/antage/eventsource/http"
 // func main() {
 //   // es := eventsource.New(nil)

@@ -1,8 +1,9 @@
 package main
 
-// import (
-//   ""
-// )
+import (
+	"log"
+	"time"
+)
 
 type hub struct {
 	// Registered connections.
@@ -29,26 +30,43 @@ func (h *hub) run() {
 	for {
 		select {
 		case c := <-h.register:
+			log.Println("Adding client")
 			h.connections[c] = true
 		case c := <-h.unregister:
+			log.Println("Removing client")
 			delete(h.connections, c)
 			close(c.send)
 		case m := <-h.broadcast:
-
-      for c := range h.connections {
-				// for sent := c.send <- m; !sent{
-			}
-				select {
-				case c.send <- m:
-					// Remove from queue
-				default:
-					delete(h.connections, c)
-					close(c.send)
-					go c.ws.Close()
-				}
-			}
-
-
+			broadcast(h, m)
 		}
+	}
+}
+
+func broadcast(h *hub, m string) {
+	conns := make(map[*connection]bool)
+	for c := range h.connections {
+		conns[c] = true
+	}
+
+	timeout := time.After(5 * time.Second)
+	timedOut := false
+	for !timedOut && len(conns) > 0 {
+		for c := range conns {
+			select {
+			case <-timeout:
+				timedOut = true
+				break
+			case c.send <- m:
+				delete(conns, c)
+			default:
+				continue
+			}
+		}
+	}
+
+	for c := range conns {
+		delete(h.connections, c)
+		close(c.send)
+		go c.ws.Close()
 	}
 }

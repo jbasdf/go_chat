@@ -100,6 +100,10 @@ func GeoJotsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(j)
 }
 
+func ShowGeoJotHandler(w http.ResponseWriter, r *http.Request) {
+
+}
+
 func CreateGeoJotHandler(w http.ResponseWriter, r *http.Request) {
 	// Parse the incoming geojot from the request body
 	var geojotJSON GeoJotJSON
