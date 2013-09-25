@@ -28,6 +28,20 @@ Delete Index:
 curl -XDELETE 'http://localhost:9200/geo_jots'
 
 
+Javascript:
+
+Geojots uses bower and grunt. Install dependencies:
+
+  npm install
+
+Update bower packges
+
+  bower update sass-bootstrap
+
+Monitor changes:
+
+  grunt watch
+
 
 Helps:
 

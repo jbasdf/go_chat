@@ -16,8 +16,7 @@ var ShowController = Ember.ObjectController.extend({
     this.set('message', '');
   },
 
-  init: function(){
-    this._super();
+  setupController: function(controller, model) {
     this.build_connection();
   },
 
